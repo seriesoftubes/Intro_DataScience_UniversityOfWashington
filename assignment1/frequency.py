@@ -7,16 +7,15 @@ except ImportError:
 import sys
 
 
-strip_word = lambda word: word.strip()
-
-
 def get_words(tweets):
-    return itertools.chain(*(itertools.imap(strip_word, tweet['text'].split()) 
-                             for tweet in tweets if 'text' in tweet))
+    strip_word = lambda word: word.strip()
+    stripped_words_in_tweets = (itertools.imap(strip_word, tweet['text'].split()) 
+                                for tweet in tweets if 'text' in tweet)
+    return itertools.chain(*stripped_words_in_tweets)
 
 def get_tweets(tweet_file):
     with open(tweet_file, 'r') as f:
-        return itertools.imap(json.loads, f.readlines())
+        return itertools.imap(json.loads, f)
 
 def main():
     tweet_file = sys.argv[1]

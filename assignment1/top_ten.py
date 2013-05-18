@@ -18,7 +18,7 @@ def get_count_by_hashtag(tweets):
 
 def get_tweets(tweet_file):
     with open(tweet_file, 'r') as f:
-        return itertools.imap(json.loads, f.readlines())
+        return itertools.imap(json.loads, f)
 
 def main():
     tweet_file = sys.argv[1]

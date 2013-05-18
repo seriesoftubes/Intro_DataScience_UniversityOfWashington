@@ -40,12 +40,11 @@ def get_total_sentiment(tweet_text):
 
 def get_tweets(tweet_file):
     with open(tweet_file, 'r') as f:
-        return itertools.imap(json.loads, f.readlines())
+        return itertools.imap(json.loads, f)
 
 def get_happiest_state(tweet_file):
     sentiments_by_state = collections.defaultdict(list)
-    tweets = get_tweets(tweet_file)
-    for tweet in tweets:
+    for tweet in get_tweets(tweet_file):
         state = get_us_state(tweet)
         if state and 'text' in tweet:
             sentiment = get_total_sentiment(tweet['text'])
@@ -59,13 +58,10 @@ def get_sentiment_by_word(sentiment_file):
         return dict((get_neutral_word(word), int(sentiment.strip())) 
                     for word, sentiment in reader)
 
-def init(sentiment_file):
-    global SENTIMENT_BY_WORD
-    SENTIMENT_BY_WORD = get_sentiment_by_word(sentiment_file)
-
 def main():
     sentiment_file, tweet_file = sys.argv[1:3]
-    init(sentiment_file)
+    global SENTIMENT_BY_WORD
+    SENTIMENT_BY_WORD = get_sentiment_by_word(sentiment_file)
     print get_happiest_state(tweet_file)
 
 if __name__ == '__main__':
