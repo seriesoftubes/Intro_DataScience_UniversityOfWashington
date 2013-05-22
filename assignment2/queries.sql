@@ -79,14 +79,9 @@ from
 
 -- keyword_search.txt
 
-select docid, 
-	sum(
-		case 
-		when term in ('washington', 'taxes', 'treasury') then count
-		else 0
-		end
-	) as similarity_score
+select docid, sum(count) as similarity_score
 from frequency
+where term in ('washington', 'taxes', 'treasury')
 group by docid
 order by 2 desc
 limit 5;
